@@ -4,8 +4,6 @@
 
 Arm mbed development IDE kit for VS Code
 
-## Commands
-
 
 ## Commands
 
@@ -43,7 +41,7 @@ Or, Creating new ARM mbed project will activate this extension.
 
 * ![check](images/compile.png)  Compile current project
 * ![check](images/flash.png) Flash current project's binary into board
-* ![check](images/terminal.png) Show serial monitor
+* ![check](images/terminal.png) Show serial monitor #not yet developed
 
 
 
@@ -66,6 +64,9 @@ Or, Creating new ARM mbed project will activate this extension.
 
 
 ## Release Note
+### 0.3.0
+- Fixed flash command
+- Removed typos
 
 ### 0.2.0
 - From now on, checking mbed installation status
