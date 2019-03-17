@@ -15,32 +15,32 @@ const spawnCMD = require('spawn-command');
 export function activate(context: vscode.ExtensionContext) {
     checkMbedInstalled()
     .then(() => {
-        console.log('Installed mbed');
+        console.log('Mbed is installed');
     })
     .catch(() => {
-        console.log('You must install mbed first');
-        vscode.window.showWarningMessage('You must install mbed.');
+        console.log('You must install Mbed first');
+        vscode.window.showWarningMessage('You must install Mbed first');
     })
     // status bar item add
     compileIcon = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
     compileIcon.text = `$(package) compile`;
-    compileIcon.tooltip = 'Compile current mbed project';
+    compileIcon.tooltip = 'Compile current Mbed project';
     compileIcon.command = 'extension.mbed.compile';    
     compileIcon.show();
 
     flashIcon = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
     flashIcon.text = `$(circuit-board) flash`;
-    flashIcon.tooltip = 'Flash complied mbed binary into board';
+    flashIcon.tooltip = 'Flash compiled Mbed binary into board';
     flashIcon.command = 'extension.mbed.flash';        
     flashIcon.show();
 
     logIcon = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
     logIcon.text = `$(terminal) serial monitor`;
     logIcon.tooltip = 'Open serial monitor';
-    logIcon.command = 'extensio.mbed.serialMonitor';
+    logIcon.command = 'extension.mbed.serialMonitor';
     logIcon.show();
 
-    commandOutput = vscode.window.createOutputChannel('mbed tasks');
+    commandOutput = vscode.window.createOutputChannel('Mbed tasks');
     context.subscriptions.push(commandOutput);    
     // add 'mbed new'
     context.subscriptions.push(vscode.commands.registerCommand('extension.mbed.new', () => {
@@ -51,11 +51,11 @@ export function activate(context: vscode.ExtensionContext) {
         };
         vscode.window.showOpenDialog(openDialogOptions).then((uris) => {
             if (uris === undefined || uris.length !== 1) {
-                vscode.window.showErrorMessage('Please select one folder for create MBED project');
+                vscode.window.showErrorMessage('Please select one folder to create Mbed project');
                 return;
             }
             const uri = uris[0];
-            console.log('MBED>> create new mbed project directory:', uri);               
+            console.log('MBED>> create new Mbed project directory:', uri);               
             vscode.window.showInputBox({
                 placeHolder: 'Enter your new project\'s name'
             }).then((prjName) => {
@@ -63,7 +63,7 @@ export function activate(context: vscode.ExtensionContext) {
                     vscode.window.showErrorMessage('Please input project\'s name');
                     return;                    
                 }
-                console.log('MBED>> create new mbed project directory:', prjName);
+                console.log('MBED>> create new Mbed project directory:', prjName);
                 mbedNewProject(uri, prjName);
             });
         });
@@ -126,7 +126,7 @@ export function checkMbedInstalled(): Promise<void> {
 }
 
 export function mbedNewProject(path: vscode.Uri, prjName: string) {
-    const cmd = `mbed new ${prjName}`;
+    const cmd = `Mbed new ${prjName}`;
     exec(cmd, path.path)
         .then(() => {
             vscode.window.showInformationMessage(`\`${cmd}\` ran successfully.`)
@@ -165,7 +165,7 @@ export function mbedCompileProject() {
     const path = vscode.workspace.workspaceFolders[0].uri.path;
     exec(cmd, path)
         .then(() => {
-            vscode.window.showInformationMessage(`Successfully complied`)
+            vscode.window.showInformationMessage(`Successfully compiled`)
         }).catch((reason) => {
             commandOutput.appendLine(`> ERROR: ${reason}`);
             vscode.window.showErrorMessage(reason, 'Show Output')
@@ -174,13 +174,13 @@ export function mbedCompileProject() {
 }
 
 export function mbedCompileAndFlashProject() {
-    const cmd = generateCommand();
+    const cmd = generateCommand() + ' -f';
     const folder = vscode.workspace.workspaceFolders;
 
     const path = vscode.workspace.workspaceFolders[0].uri.path;
     exec(cmd, path)
         .then(() => {
-            vscode.window.showInformationMessage(`Successfully complied`)
+            vscode.window.showInformationMessage(`Successfully compiled`)
         }).catch((reason) => {
             commandOutput.appendLine(`> ERROR: ${reason}`);
             vscode.window.showErrorMessage(reason, 'Show Output')
